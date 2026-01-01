@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>پنل مدیریت تبلیغات | الو ذغال</title>
+    <style>
+        @import url('https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css');
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Vazirmatn', sans-serif;
+        }
+        
+        body {
+            background: #0a0a0a;
+            color: #fff;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, #1a1a1a, #050505);
+            border-radius: 20px;
+            border: 2px solid #e2b04a;
+        }
+        
+        .header h1 {
+            color: #e2b04a;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            color: #ccc;
+            font-size: 14px;
+        }
+        
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            background: #1a1a1a;
+            padding: 10px;
+            border-radius: 15px;
+        }
+        
+        .tab-btn {
+            padding: 12px 25px;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            color: #ccc;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            flex: 1;
+            min-width: 150px;
+            text-align: center;
+        }
+        
+        .tab-btn.active {
+            background: #e2b04a;
+            color: #000;
+            border-color: #e2b04a;
+            font-weight: bold;
+        }
+        
+        .tab-content {
+            display: none;
+            background: #1a1a1a;
+            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid #333;
+            margin-bottom: 20px;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #bbb;
+            font-size: 14px;
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            background: #0a0a0a;
+            border: 1px solid #333;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 14px;
+        }
+        
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin: 5px;
+        }
+        
+        .btn-primary {
+            background: #e2b04a;
+            color: #000;
+        }
+        
+        .btn-primary:hover {
+            background: #ffcc33;
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background: #333;
+            color: #fff;
+        }
+        
+        .btn-danger {
+            background: #8b0000;
+            color: #fff;
+        }
+        
+        .ads-list {
+            display: grid;
+            gap: 15px;
+        }
+        
+        .ad-item {
+            background: #0a0a0a;
+            border: 1px solid #333;
+            border-radius: 15px;
+            padding: 20px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        .ad-item img {
+            width: 80px;
+            height: 80px;
+            border-radius: 10px;
+            object-fit: cover;
+        }
+        
+        .ad-info {
+            flex: 1;
+        }
+        
+        .ad-title {
+            color: #e2b04a;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .ad-desc {
+            color: #ccc;
+            font-size: 13px;
+            margin-bottom: 5px;
+        }
+        
+        .ad-phone {
+            color: #25D366;
+            font-size: 12px;
+        }
+        
+        .ad-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .ad-actions button {
+            padding: 8px 15px;
+            font-size: 12px;
+        }
+        
+        .json-output {
+            background: #0a0a0a;
+            border: 1px solid #333;
+            border-radius: 10px;
+            padding: 20px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            max-height: 400px;
+            overflow-y: auto;
+            font-size: 13px;
+            color: #ccc;
+            margin-top: 20px;
+            position: relative;
+        }
+        
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: #333;
+            color: #fff;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        
+        .ticker-item {
+            background: #0a0a0a;
+            border: 1px solid #333;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .ticker-text {
+            flex: 1;
+            color: #ccc;
+            font-size: 14px;
+        }
+        
+        .message {
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .message.success {
+            background: rgba(0, 200, 83, 0.1);
+            border: 1px solid #00c853;
+            color: #00c853;
+            display: block;
+        }
+        
+        .message.error {
+            background: rgba(255, 0, 0, 0.1);
+            border: 1px solid #ff0000;
+            color: #ff0000;
+            display: block;
+        }
+        
+        .instructions {
+            background: rgba(226, 176, 74, 0.1);
+            border: 1px solid #e2b04a;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            color: #ccc;
+            font-size: 14px;
+        }
+        
+        .instructions h3 {
+            color: #e2b04a;
+            margin-bottom: 10px;
+        }
+        
+        .instructions ol {
+            padding-right: 20px;
+            margin-top: 10px;
+        }
+        
+        .instructions li {
+            margin-bottom: 10px;
+        }
+        
+        .section-title {
+            color: #e2b04a;
+            font-size: 20px;
+            margin: 25px 0 15px 0;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #333;
+        }
+        
+        @media (max-width: 768px) {
+            .ad-item {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .ad-actions {
+                justify-content: center;
+            }
+            
+            .tabs {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔥 پنل مدیریت تبلیغات الو ذغال</h1>
+            <p>مدیریت تبلیغات استوری، تیکر و تبلیغ ویژه</p>
+        </div>
+        
+        <div class="instructions">
+            <h3>📋 راهنمای استفاده:</h3>
+            <ol>
+                <li>اطلاعات تبلیغات را در تب‌های مربوطه وارد کنید</li>
+                <li>کد JSON تولید شده را کپی کنید</li>
+                <li>فایل ads.json در گیتهاب را با کد جدید جایگزین کنید</li>
+                <li>تغییرات پس از چند ثانیه در سایت اعمال می‌شود</li>
+            </ol>
+        </div>
+        
+        <div class="tabs">
+            <button class="tab-btn active" onclick="openTab('stories')">📱 استوری‌ها</button>
+            <button class="tab-btn" onclick="openTab('ticker')">📜 تیکر متنی</button>
+            <button class="tab-btn" onclick="openTab('vip')">⭐ تبلیغ ویژه</button>
+            <button class="tab-btn" onclick="openTab('json')">📋 کد JSON</button>
+        </div>
+        
+        <!-- تب استوری‌ها -->
+        <div id="stories-tab" class="tab-content active">
+            <h2 class="section-title">افزودن تبلیغ استوری جدید</h2>
+            
+            <div class="form-group">
+                <label>عنوان تبلیغ (حداکثر 20 کاراکتر):</label>
+                <input type="text" id="adTitle" placeholder="مثلاً: کافه دنج" maxlength="20">
+            </div>
+            
+            <div class="form-group">
+                <label>توضیحات تبلیغ (حداکثر 100 کاراکتر):</label>
+                <textarea id="adDesc" placeholder="توضیح کوتاه درباره تبلیغ" maxlength="100"></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label>لینک عکس تبلیغ (URL):</label>
+                <input type="url" id="adImage" placeholder="https://example.com/image.jpg">
+                <small style="color: #888; display: block; margin-top: 5px;">سایز پیشنهادی: 400x400 پیکسل</small>
+            </div>
+            
+            <div class="form-group">
+                <label>شماره تماس تبلیغ‌دهنده:</label>
+                <input type="tel" id="adPhone" placeholder="0912XXXXXXX" dir="ltr">
+            </div>
+            
+            <div class="form-group">
+                <label>اولویت نمایش (۱ تا ۱۰):</label>
+                <select id="adPriority">
+                    <option value="1">۱ - پایین</option>
+                    <option value="2">۲</option>
+                    <option value="3">۳</option>
+                    <option value="4">۴</option>
+                    <option value="5" selected>۵ - متوسط</option>
+                    <option value="6">۶</option>
+                    <option value="7">۷</option>
+                    <option value="8">۸</option>
+                    <option value="9">۹</option>
+                    <option value="10">۱۰ - بالا</option>
+                </select>
+            </div>
+            
+            <button class="btn btn-primary" onclick="addStoryAd()">
+                ➕ افزودن تبلیغ استوری
+            </button>
+            
+            <h2 class="section-title">لیست تبلیغات استوری فعلی</h2>
+            <div class="ads-list" id="adsList">
+                <!-- تبلیغات اینجا نمایش داده می‌شوند -->
+            </div>
+        </div>
+        
+        <!-- تب تیکر متنی -->
+        <div id="ticker-tab" class="tab-content">
+            <h2 class="section-title">مدیریت متن‌های تیکر</h2>
+            <p style="color: #ccc; margin-bottom: 20px;">
+                متن‌های تیکر در نوار بالای سایت به صورت روان نمایش داده می‌شوند.
+            </p>
+            
+            <div class="form-group">
+                <label>متن تیکر جدید:</label>
+                <input type="text" id="tickerText" placeholder="متن تبلیغاتی برای نمایش در تیکر" maxlength="100">
+            </div>
+            
+            <button class="btn btn-primary" onclick="addTickerText()">
+                ➕ افزودن متن تیکر
+            </button>
+            
+            <h2 class="section-title">لیست متن‌های تیکر</h2>
+            <div id="tickerList">
+                <!-- متن‌های تیکر اینجا نمایش داده می‌شوند -->
+            </div>
+        </div>
+        
+        <!-- تب VIP -->
+        <div id="vip-tab" class="tab-content">
+            <h2 class="section-title">تنظیمات تبلیغ ویژه</h2>
+            
+            <div class="form-group">
+                <label>فعال/غیرفعال کردن تبلیغ ویژه:</label>
+                <select id="vipActive">
+                    <option value="true">✅ فعال</option>
+                    <option value="false">❌ غیرفعال</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>عنوان تبلیغ ویژه:</label>
+                <input type="text" id="vipTitle" placeholder="مثلاً: پیشنهاد ویژه هفته">
+            </div>
+            
+            <div class="form-group">
+                <label>توضیحات تبلیغ ویژه:</label>
+                <textarea id="vipDesc" placeholder="توضیحات کامل تبلیغ ویژه" rows="4"></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label>لینک عکس تبلیغ ویژه (URL):</label>
+                <input type="url" id="vipImage" placeholder="https://example.com/vip-image.jpg">
+                <small style="color: #888; display: block; margin-top: 5px;">سایز پیشنهادی: 600x400 پیکسل</small>
+            </div>
+            
+            <div class="form-group">
+                <label>شماره تماس برای تبلیغ ویژه:</label>
+                <input type="tel" id="vipPhone" placeholder="0912XXXXXXX" dir="ltr">
+            </div>
+            
+            <button class="btn btn-primary" onclick="saveVipAd()">
+                💾 ذخیره تبلیغ ویژه
+            </button>
+        </div>
+        
+        <!-- تب JSON -->
+        <div id="json-tab" class="tab-content">
+            <h2 class="section-title">کد JSON تبلیغات</h2>
+            <p style="color: #ccc; margin-bottom: 15px;">
+                این کد را کپی کرده و در فایل <strong>ads.json</strong> در گیتهاب قرار دهید.
+            </p>
+            
+            <button class="btn btn-primary" onclick="copyJSON()">
+                📋 کپی کد JSON
+            </button>
+            
+            <div class="json-output" id="jsonOutput"></div>
+            
+            <div style="margin-top: 20px; color: #888; font-size: 12px;">
+                💡 پس از جایگزینی فایل ads.json، تغییرات در عرض چند ثانیه در سایت اعمال می‌شود.
+            </div>
+        </div>
+        
+        <div id="message" class="message"></div>
+    </div>
+    
+    <script>
+        // ساختار داده تبلیغات
+        let adsData = {
+            stories: [],
+            ticker: [
+                "🔥 الو ذغال | سفارش آنلاین ذغال مرغوب | تحویل سریع در ایذه",
+                "🎉 با خرید 3 کیسه ذغال، یک بسته سبزی رایگان دریافت کنید!",
+                "⭐ ذغال مرغوب کبابی با کیفیت عالی | ضمانت برگشت"
+            ],
+            vip: {
+                active: false,
+                title: "",
+                description: "",
+                image: "",
+                phone: ""
+            }
+        };
+        
+        // بارگذاری اولیه
+        function loadAdsData() {
+            const savedAds = localStorage.getItem('aloozoghal_ads');
+            if (savedAds) {
+                try {
+                    adsData = JSON.parse(savedAds);
+                } catch (e) {
+                    console.log("خطا در بارگیری تبلیغات");
+                }
+            }
+            
+            displayAdsList();
+            displayTickerList();
+            loadVipForm();
+            updateJSONOutput();
+        }
+        
+        // نمایش لیست تبلیغات استوری
+        function displayAdsList() {
+            const adsList = document.getElementById('adsList');
+            adsList.innerHTML = '';
+            
+            if (adsData.stories.length === 0) {
+                adsList.innerHTML = '<p style="color: #888; text-align: center; padding: 20px;">هنوز تبلیغی اضافه نشده است.</p>';
+                return;
+            }
+            
+            adsData.stories.forEach((ad, index) => {
+                const adElement = document.createElement('div');
+                adElement.className = 'ad-item';
+                
+                adElement.innerHTML = `
+                    <img src="${ad.image}" alt="${ad.title}" onerror="this.src='https://via.placeholder.com/80?text=Ad'">
+                    <div class="ad-info">
+                        <div class="ad-title">${ad.title}</div>
+                        <div class="ad-desc">${ad.description}</div>
+                        <div class="ad-phone">📞 ${ad.phone}</div>
+                        <small style="color: #666;">اولویت: ${ad.priority}</small>
+                    </div>
+                    <div class="ad-actions">
+                        <button class="btn btn-secondary" onclick="editAd(${index})">✏️ ویرایش</button>
+                        <button class="btn btn-danger" onclick="deleteAd(${index})">🗑️ حذف</button>
+                    </div>
+                `;
+                
+                adsList.appendChild(adElement);
+            });
+        }
+        
+        // نمایش لیست تیکر
+        function displayTickerList() {
+            const tickerList = document.getElementById('tickerList');
+            tickerList.innerHTML = '';
+            
+            if (adsData.ticker.length === 0) {
+                tickerList.innerHTML = '<p style="color: #888; text-align: center; padding: 20px;">هنوز متنی اضافه نشده است.</p>';
+                return;
+            }
+            
+            adsData.ticker.forEach((text, index) => {
+                const tickerElement = document.createElement('div');
+                tickerElement.className = 'ticker-item';
+                
+                tickerElement.innerHTML = `
+                    <div class="ticker-text">${text}</div>
+                    <div class="ad-actions">
+                        <button class="btn btn-secondary" onclick="editTicker(${index})">✏️ ویرایش</button>
+                        <button class="btn btn-danger" onclick="deleteTicker(${index})">🗑️ حذف</button>
+                    </div>
+                `;
+                
+                tickerList.appendChild(tickerElement);
+            });
+        }
+        
+        // بارگذاری فرم VIP
+        function loadVipForm() {
+            document.getElementById('vipActive').value = adsData.vip.active.toString();
+            document.getElementById('vipTitle').value = adsData.vip.title;
+            document.getElementById('vipDesc').value = adsData.vip.description;
+            document.getElementById('vipImage').value = adsData.vip.image;
+            document.getElementById('vipPhone').value = adsData.vip.phone;
+        }
+        
+        // افزودن تبلیغ استوری جدید
+        function addStoryAd() {
+            const title = document.getElementById('adTitle').value.trim();
+            const description = document.getElementById('adDesc').value.trim();
+            const image = document.getElementById('adImage').value.trim();
+            const phone = document.getElementById('adPhone').value.trim();
+            const priority = parseInt(document.getElementById('adPriority').value);
+            
+            // اعتبارسنجی
+            if (!title || !description || !image || !phone) {
+                showMessage('لطفاً همه فیلدها را پر کنید', 'error');
+                return;
+            }
+            
+            if (phone.length < 10) {
+                showMessage('شماره تماس معتبر نیست', 'error');
+                return;
+            }
+            
+            const newAd = {
+                title,
+                description,
+                image,
+                phone,
+                priority
+            };
+            
+            adsData.stories.push(newAd);
+            
+            // مرتب کردن بر اساس اولویت
+            adsData.stories.sort((a, b) => b.priority - a.priority);
+            
+            // ذخیره در localStorage
+            saveAdsData();
+            
+            // پاک کردن فرم
+            document.getElementById('adTitle').value = '';
+            document.getElementById('adDesc').value = '';
+            document.getElementById('adImage').value = '';
+            document.getElementById('adPhone').value = '';
+            
+            showMessage('تبلیغ استوری با موفقیت اضافه شد', 'success');
+            displayAdsList();
+            updateJSONOutput();
+        }
+        
+        // ویرایش تبلیغ
+        function editAd(index) {
+            const ad = adsData.stories[index];
+            
+            document.getElementById('adTitle').value = ad.title;
+            document.getElementById('adDesc').value = ad.description;
+            document.getElementById('adImage').value = ad.image;
+            document.getElementById('adPhone').value = ad.phone;
+            document.getElementById('adPriority').value = ad.priority;
+            
+            // حذف تبلیغ قدیمی
+            adsData.stories.splice(index, 1);
+            
+            showMessage('تبلیغ برای ویرایش آماده است. تغییرات را اعمال کنید و دکمه افزودن را بزنید.', 'success');
+            displayAdsList();
+            updateJSONOutput();
+        }
+        
+        // حذف تبلیغ
+        function deleteAd(index) {
+            if (confirm('آیا از حذف این تبلیغ مطمئن هستید؟')) {
+                adsData.stories.splice(index, 1);
+                saveAdsData();
+                showMessage('تبلیغ حذف شد', 'success');
+                displayAdsList();
+                updateJSONOutput();
+            }
+        }
+        
+        // افزودن متن تیکر
+        function addTickerText() {
+            const text = document.getElementById('tickerText').value.trim();
+            
+            if (!text) {
+                showMessage('لطفاً متن تیکر را وارد کنید', 'error');
+                return;
+            }
+            
+            adsData.ticker.push(text);
+            saveAdsData();
+            
+            document.getElementById('tickerText').value = '';
+            showMessage('متن تیکر اضافه شد', 'success');
+            displayTickerList();
+            updateJSONOutput();
+        }
+        
+        // ویرایش متن تیکر
+        function editTicker(index) {
+            const text = adsData.ticker[index];
+            document.getElementById('tickerText').value = text;
+            
+            // حذف متن قدیمی
+            adsData.ticker.splice(index, 1);
+            
+            showMessage('متن تیکر برای ویرایش آماده است. تغییرات را اعمال کنید و دکمه افزودن را بزنید.', 'success');
+            displayTickerList();
+            updateJSONOutput();
+        }
+        
+        // حذف متن تیکر
+        function deleteTicker(index) {
+            if (confirm('آیا از حذف این متن تیکر مطمئن هستید؟')) {
+                adsData.ticker.splice(index, 1);
+                saveAdsData();
+                showMessage('متن تیکر حذف شد', 'success');
+                displayTickerList();
+                updateJSONOutput();
+            }
+        }
+        
+        // ذخیره تبلیغ ویژه
+        function saveVipAd() {
+            adsData.vip = {
+                active: document.getElementById('vipActive').value === 'true',
+                title: document.getElementById('vipTitle').value.trim(),
+                description: document.getElementById('vipDesc').value.trim(),
+                image: document.getElementById('vipImage').value.trim(),
+                phone: document.getElementById('vipPhone').value.trim()
+            };
+            
+            saveAdsData();
+            showMessage('تبلیغ ویژه ذخیره شد', 'success');
+            updateJSONOutput();
+        }
+        
+        // ذخیره تبلیغات
+        function saveAdsData() {
+            localStorage.setItem('aloozoghal_ads', JSON.stringify(adsData, null, 2));
+        }
+        
+        // به‌روزرسانی خروجی JSON
+        function updateJSONOutput() {
+            const jsonOutput = document.getElementById('jsonOutput');
+            jsonOutput.textContent = JSON.stringify(adsData, null, 2);
+        }
+        
+        // کپی JSON
+        function copyJSON() {
+            const jsonText = document.getElementById('jsonOutput').textContent;
+            navigator.clipboard.writeText(jsonText)
+                .then(() => showMessage('کد JSON کپی شد', 'success'))
+                .catch(err => showMessage('خطا در کپی کردن', 'error'));
+        }
+        
+        // نمایش پیام
+        function showMessage(text, type) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.textContent = text;
+            messageDiv.className = `message ${type}`;
+            
+            setTimeout(() => {
+                messageDiv.style.display = 'none';
+            }, 3000);
+        }
+        
+        // مدیریت تب‌ها
+        function openTab(tabName) {
+            // مخفی کردن همه تب‌ها
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // نمایش تب انتخاب شده
+            document.getElementById(`${tabName}-tab`).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+        
+        // بارگذاری اولیه
+        window.onload = loadAdsData;
+    </script>
+</body>
+</html>
