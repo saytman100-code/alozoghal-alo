@@ -1,22 +1,4 @@
 {
-  "stories": [
-    {
-      "title": "کافه دنج",
-      "description": "فضایی گرم و دوستانه با بهترین قهوه‌ها",
-      "image": "https://example.com/cafe.jpg",
-      "phone": "09121234567",
-      "priority": 5
-    },
-    {
-      "title": "نانوایی سنتی",
-      "description": "نان تازه و گرم با عطر دل‌انگیز",
-      "image": "https://example.com/bakery.jpg",
-      "phone": "09129876543",
-      "priority": 4
-    }
-  ],
-
- {
   "stories": [],
   "ticker": [
     "دمم گرم که دارم تلاش کنم"
@@ -27,14 +9,5 @@
     "description": "",
     "image": "",
     "phone": ""
-  }
-}
-  
-  "vip": {
-    "active": true,
-    "title": "پیشنهاد ویژه هفته",
-    "description": "با هر ۳ کیسه ذغال، یک بسته سبزی رایگان دریافت کنید!",
-    "image": "https://example.com/special-offer.jpg",
-    "phone": "09220730628"
   }
 }
